@@ -36,7 +36,7 @@ model User {
   name            String            @db.VarChar(55)
   email           String            @unique @db.VarChar(55)
   password        String            @db.VarChar(255)
-  phone_number    String            @db.VarChar(20)
+  phone_number    String            @db.VarChar(20) @unique
   role            UserRole          @default(USER)
   created_at      DateTime          @default(now())
   updated_at      DateTime          @updatedAt
