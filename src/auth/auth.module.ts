@@ -12,7 +12,7 @@ const configService = new ConfigService();
     JwtModule.register({
       global: true,
       secret: configService.get<string>('JWT_SECRET_KEY'),
-      signOptions: { expiresIn: '60s' },
+      signOptions: { expiresIn: '120s' },
     }),
   ],
   controllers: [AuthController],
