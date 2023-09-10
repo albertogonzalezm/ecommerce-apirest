@@ -1,12 +1,18 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { ValidationPipe } from '@nestjs/common';
+import { RequestMethod, ValidationPipe } from '@nestjs/common';
 import * as cookieParser from 'cookie-parser';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  app.setGlobalPrefix('api/v1');
+  app.enableCors();
+  app.setGlobalPrefix('api/v1', {
+    exclude: [
+      { path: '/', method: RequestMethod.GET },
+      { path: '/company', method: RequestMethod.GET },
+    ],
+  });
   const config = new DocumentBuilder()
     .setTitle('ONSHOP')
     .setDescription('OnShop API')
@@ -20,9 +26,10 @@ async function bootstrap() {
     })
     .build();
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api', app, document);
+  SwaggerModule.setup('api/doc', app, document);
   app.useGlobalPipes(new ValidationPipe());
   app.use(cookieParser());
   await app.listen(process.env.PORT);
+  console.log(`API is running on: ${await app.getUrl()}`);
 }
 bootstrap();

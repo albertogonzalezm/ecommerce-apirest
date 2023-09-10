@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { PrismaService } from 'src/prisma.service';
+import { PrismaService } from '../../../prisma.service';
 import { compare } from 'bcrypt';
 import { SignInUserDto } from './dto/signin-user.dto';
 import { JwtService } from '@nestjs/jwt';
