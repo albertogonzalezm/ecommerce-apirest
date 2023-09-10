@@ -4,12 +4,11 @@ import {
   HttpCode,
   HttpStatus,
   Post,
-  Req,
   Res,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { SignInUserDto } from './dto/signin-user.dto';
-import { Response, Request } from 'express';
+import { Response } from 'express';
 import { ApiTags } from '@nestjs/swagger';
 
 @ApiTags('auth')
