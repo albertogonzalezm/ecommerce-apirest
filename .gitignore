@@ -1,6 +1,8 @@
 # compiled output
 /dist
 /node_modules
+.env
+tecnologies-and-tools.pdf
 
 # Logs
 logs

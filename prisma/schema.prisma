@@ -1,0 +1,137 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  USER
+  ADMIN
+}
+
+enum CompanyRole {
+  SELLER
+  SUPPLIER
+}
+
+enum OrderState {
+  PREPARING
+  ONTHEWAY
+  DELIVERED
+}
+
+enum ProductState {
+  NEW
+  USED
+}
+
+model User {
+  user_id         String            @id @default(uuid())
+  name            String            @db.VarChar(55)
+  email           String            @unique @db.VarChar(55)
+  password        String            @db.VarChar(255)
+  phone_number    String?           @unique @db.VarChar(20)
+  role            UserRole          @default(USER)
+  created_at      DateTime          @default(now())
+  updated_at      DateTime          @updatedAt
+  Cart            Cart[]
+  Order           Order[]
+  ShippingAddress ShippingAddress[]
+  Comment         Comment[]
+}
+
+model ShippingAddress {
+  shipping_address_id String @id @default(uuid())
+  user_id_fk          String @map("user_id")
+  address             String @db.VarChar(20)
+  country             String @db.VarChar(20)
+  city                String @db.VarChar(20)
+  postal_code         String @db.VarChar(20)
+  User                User   @relation(fields: [user_id_fk], references: [user_id], onDelete: Cascade, onUpdate: Cascade)
+}
+
+model Company {
+  company_id String      @id @default(uuid())
+  owner      String      @db.VarChar(55)
+  name       String      @unique @db.VarChar(55)
+  email      String      @unique @db.VarChar(55)
+  address    String      @db.VarChar(20)
+  role       CompanyRole @default(SELLER)
+  created_at DateTime    @default(now())
+  updated_at DateTime    @updatedAt
+  Product    Product[]
+}
+
+model Product {
+  product_id    String          @id @default(uuid())
+  company_id_fk String          @map("company_id")
+  sku           String          @unique
+  name          String          @db.VarChar(55)
+  price         Decimal         @db.Decimal(8, 2)
+  weight        Decimal         @db.Decimal(8, 2)
+  description   String          @db.VarChar(500)
+  manufacturer  String          @db.VarChar(20)
+  stock         Int
+  published     Boolean         @default(false)
+  state         ProductState    @default(NEW)
+  created_at    DateTime        @default(now())
+  updated_at    DateTime        @updatedAt
+  deleted_at    DateTime?
+  company       Company         @relation(fields: [company_id_fk], references: [company_id], onDelete: Restrict, onUpdate: Cascade)
+  ProductImages ProductImages[]
+  Cart          Cart[]
+  Order         Order[]
+  OrderDetail   OrderDetail[]
+  Comment       Comment[]
+}
+
+model ProductImages {
+  product_id_fk String  @map("product_id")
+  image_url     String  @unique
+  Product       Product @relation(fields: [product_id_fk], references: [product_id], onDelete: Cascade, onUpdate: Cascade)
+}
+
+model Comment {
+  comment_id    String  @id @default(uuid())
+  user_id_fk    String  @map("user_id")
+  product_id_fk String  @map("product_id")
+  comment       String  @db.VarChar(400)
+  User          User    @relation(fields: [user_id_fk], references: [user_id], onDelete: Cascade, onUpdate: Cascade)
+  Product       Product @relation(fields: [product_id_fk], references: [product_id], onDelete: Cascade, onUpdate: Cascade)
+}
+
+model Cart {
+  cart_id       String  @id @default(uuid())
+  product_id_fk String  @map("product_id")
+  user_id_fk    String  @map("user_id")
+  quantity      Int     @default(1)
+  Product       Product @relation(fields: [product_id_fk], references: [product_id], onDelete: Cascade, onUpdate: Cascade)
+  User          User    @relation(fields: [user_id_fk], references: [user_id], onDelete: Cascade, onUpdate: Cascade)
+}
+
+model Order {
+  order_id      String        @id @default(uuid())
+  user_id_fk    String        @map("user_id")
+  product_id_fk String        @map("product_id")
+  created_at    DateTime      @default(now())
+  state         OrderState    @default(PREPARING)
+  User          User          @relation(fields: [user_id_fk], references: [user_id], onDelete: Restrict, onUpdate: Cascade)
+  Product       Product       @relation(fields: [product_id_fk], references: [product_id], onDelete: Restrict, onUpdate: Cascade)
+  OrderDetail   OrderDetail[]
+}
+
+model OrderDetail {
+  order_detail_id String  @id @default(uuid())
+  order_id_fk     String  @map("order_id")
+  product_id_fk   String  @map("product_id")
+  quantity        Int
+  unit_price      Decimal @db.Decimal(8, 2)
+  Order           Order   @relation(fields: [order_id_fk], references: [order_id], onDelete: Restrict, onUpdate: Cascade)
+  Product         Product @relation(fields: [product_id_fk], references: [product_id], onDelete: Restrict, onUpdate: Cascade)
+}
