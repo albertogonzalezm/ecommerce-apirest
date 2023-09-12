@@ -20,10 +20,7 @@ async function bootstrap() {
     .addTag('user')
     .addTag('auth')
     .addServer(`http://localhost:${process.env.PORT}`, 'Local development')
-    .addCookieAuth('access_token', {
-      type: 'apiKey',
-      in: 'cookie',
-    })
+    .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api/doc', app, document);

@@ -8,13 +8,14 @@ import {
   Delete,
   HttpCode,
   HttpStatus,
+  UseInterceptors,
   UseGuards,
 } from '@nestjs/common';
 import { UserService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User as UserModel } from '@prisma/client';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from '../auth/guard/auth.guard';
 
 @ApiTags('user')
@@ -28,8 +29,9 @@ export class UserController {
     return await this.userService.create(createUserDto);
   }
 
-  // @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
+  @UseGuards(AuthGuard)
+  @ApiBearerAuth()
   @Get()
   async findAll(): Promise<UserModel[]> {
     return await this.userService.findAll();

@@ -5,13 +5,13 @@ import { PrismaService } from '../../../prisma.service';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 
-const configService = new ConfigService();
+export const configService = new ConfigService();
 
 @Module({
   imports: [
     JwtModule.register({
       global: true,
-      secret: configService.get<string>('JWT_SECRET_KEY'),
+      secret: process.env.JWT_SECRET_KEY,
       signOptions: { expiresIn: '120s' },
     }),
   ],
