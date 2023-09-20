@@ -7,7 +7,6 @@ export class AppController {
 
   @Get()
   @Redirect('api/doc')
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
   apiDoc(): void {}
 
   @Get('company')

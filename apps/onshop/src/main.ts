@@ -19,14 +19,16 @@ async function bootstrap() {
     .setVersion('1.0')
     .addTag('user')
     .addTag('auth')
-    .addServer(`http://localhost:`, 'Local development')
+    .addServer(`http://localhost:3000`, 'Local development')
+    .addServer(`https://onshop-api-6ol2-dev.fl0.io/`, 'FL0')
     .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api/doc', app, document);
   app.useGlobalPipes(new ValidationPipe());
   app.use(cookieParser());
+
   await app.listen(process.env.PORT);
-  console.log(`API is running on: ${await app.getUrl()}`);
+  console.log('NestApp is running');
 }
 bootstrap();
