@@ -19,7 +19,7 @@ async function bootstrap() {
     .setVersion('1.0')
     .addTag('user')
     .addTag('auth')
-    .addServer(`http://localhost:${process.env.PORT}`, 'Local development')
+    .addServer(`http://localhost:`, 'Local development')
     .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, config);
