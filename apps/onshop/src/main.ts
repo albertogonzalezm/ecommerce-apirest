@@ -19,8 +19,7 @@ async function bootstrap() {
     .setVersion('1.0')
     .addTag('user')
     .addTag('auth')
-    .addServer(`http://localhost:3000`, 'Local development')
-    .addServer(`https://onshop-api-6ol2-dev.fl0.io/`, 'FL0')
+    .addServer(`http://localhost:${process.env.PORT}`, 'Local development')
     .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, config);
