@@ -6,7 +6,10 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  app.enableCors();
+  app.enableCors({
+    origin: 'http://localhost:3000',
+    credentials: true,
+  });
   app.setGlobalPrefix('api/v1', {
     exclude: [
       { path: '/', method: RequestMethod.GET },
@@ -20,7 +23,7 @@ async function bootstrap() {
     .addTag('user')
     .addTag('auth')
     .addServer(`http://localhost:${process.env.PORT}`, 'Local development')
-    .addBearerAuth()
+    .addCookieAuth('access_token')
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api/doc', app, document);

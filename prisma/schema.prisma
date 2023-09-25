@@ -10,25 +10,21 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum UserRole {
-  USER
-  ADMIN
-}
-
-enum CompanyRole {
-  SELLER
-  SUPPLIER
+enum Role {
+  user
+  admin
+  company
 }
 
 enum OrderState {
-  PREPARING
-  ONTHEWAY
-  DELIVERED
+  preparing
+  ontheway
+  delivered
 }
 
 enum ProductState {
-  NEW
-  USED
+  new
+  used
 }
 
 model User {
@@ -37,7 +33,7 @@ model User {
   email           String            @unique @db.VarChar(55)
   password        String            @db.VarChar(255)
   phone_number    String?           @unique @db.VarChar(20)
-  role            UserRole          @default(USER)
+  role            Role              @default(user)
   created_at      DateTime          @default(now())
   updated_at      DateTime          @updatedAt
   Cart            Cart[]
@@ -57,14 +53,15 @@ model ShippingAddress {
 }
 
 model Company {
-  company_id String      @id @default(uuid())
-  owner      String      @db.VarChar(55)
-  name       String      @unique @db.VarChar(55)
-  email      String      @unique @db.VarChar(55)
-  address    String      @db.VarChar(20)
-  role       CompanyRole @default(SELLER)
-  created_at DateTime    @default(now())
-  updated_at DateTime    @updatedAt
+  company_id String    @id @default(uuid())
+  owner      String    @db.VarChar(55)
+  name       String    @unique @db.VarChar(55)
+  email      String    @unique @db.VarChar(55)
+  password   String    @db.VarChar(255)
+  address    String    @db.VarChar(20)
+  role       Role      @default(company)
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
   Product    Product[]
 }
 
@@ -79,7 +76,7 @@ model Product {
   manufacturer  String          @db.VarChar(20)
   stock         Int
   published     Boolean         @default(false)
-  state         ProductState    @default(NEW)
+  state         ProductState    @default(new)
   created_at    DateTime        @default(now())
   updated_at    DateTime        @updatedAt
   deleted_at    DateTime?
@@ -120,7 +117,7 @@ model Order {
   user_id_fk    String        @map("user_id")
   product_id_fk String        @map("product_id")
   created_at    DateTime      @default(now())
-  state         OrderState    @default(PREPARING)
+  state         OrderState    @default(preparing)
   User          User          @relation(fields: [user_id_fk], references: [user_id], onDelete: Restrict, onUpdate: Cascade)
   Product       Product       @relation(fields: [product_id_fk], references: [product_id], onDelete: Restrict, onUpdate: Cascade)
   OrderDetail   OrderDetail[]

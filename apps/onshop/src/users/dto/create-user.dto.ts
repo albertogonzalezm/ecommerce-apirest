@@ -14,14 +14,14 @@ export class CreateUserDto {
   @IsNotEmpty()
   name: string;
 
-  @ApiProperty({ example: 'jhon1doe@email.com', maxLength: 55 })
+  @ApiProperty({ example: 'gonza@email.com', maxLength: 55 })
   @IsString()
   @IsEmail()
   @MaxLength(55)
   @IsNotEmpty()
   email: string;
 
-  @ApiProperty({ example: 'Jhon123', maxLength: 255 })
+  @ApiProperty({ example: 'alberto123', maxLength: 255 })
   @IsString()
   @MaxLength(255)
   @IsNotEmpty()

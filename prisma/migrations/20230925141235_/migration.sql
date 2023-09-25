@@ -1,14 +1,11 @@
 -- CreateEnum
-CREATE TYPE "UserRole" AS ENUM ('USER', 'ADMIN');
+CREATE TYPE "Role" AS ENUM ('user', 'admin', 'company');
 
 -- CreateEnum
-CREATE TYPE "CompanyRole" AS ENUM ('SELLER', 'SUPPLIER');
+CREATE TYPE "OrderState" AS ENUM ('preparing', 'ontheway', 'delivered');
 
 -- CreateEnum
-CREATE TYPE "OrderState" AS ENUM ('PREPARING', 'ONTHEWAY', 'DELIVERED');
-
--- CreateEnum
-CREATE TYPE "ProductState" AS ENUM ('NEW', 'USED');
+CREATE TYPE "ProductState" AS ENUM ('new', 'used');
 
 -- CreateTable
 CREATE TABLE "User" (
@@ -16,8 +13,8 @@ CREATE TABLE "User" (
     "name" VARCHAR(55) NOT NULL,
     "email" VARCHAR(55) NOT NULL,
     "password" VARCHAR(255) NOT NULL,
-    "phone_number" VARCHAR(20) NOT NULL,
-    "role" "UserRole" NOT NULL DEFAULT 'USER',
+    "phone_number" VARCHAR(20),
+    "role" "Role" NOT NULL DEFAULT 'user',
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
 
@@ -42,7 +39,9 @@ CREATE TABLE "Company" (
     "owner" VARCHAR(55) NOT NULL,
     "name" VARCHAR(55) NOT NULL,
     "email" VARCHAR(55) NOT NULL,
+    "password" VARCHAR(255) NOT NULL,
     "address" VARCHAR(20) NOT NULL,
+    "role" "Role" NOT NULL DEFAULT 'company',
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
 
@@ -58,10 +57,10 @@ CREATE TABLE "Product" (
     "price" DECIMAL(8,2) NOT NULL,
     "weight" DECIMAL(8,2) NOT NULL,
     "description" VARCHAR(500) NOT NULL,
-    "manufacturer" TEXT NOT NULL,
+    "manufacturer" VARCHAR(20) NOT NULL,
     "stock" INTEGER NOT NULL,
     "published" BOOLEAN NOT NULL DEFAULT false,
-    "state" "ProductState" NOT NULL DEFAULT 'NEW',
+    "state" "ProductState" NOT NULL DEFAULT 'new',
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
     "deleted_at" TIMESTAMP(3),
@@ -101,7 +100,7 @@ CREATE TABLE "Order" (
     "user_id" TEXT NOT NULL,
     "product_id" TEXT NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "state" "OrderState" NOT NULL DEFAULT 'PREPARING',
+    "state" "OrderState" NOT NULL DEFAULT 'preparing',
 
     CONSTRAINT "Order_pkey" PRIMARY KEY ("order_id")
 );
@@ -119,6 +118,9 @@ CREATE TABLE "OrderDetail" (
 
 -- CreateIndex
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "User_phone_number_key" ON "User"("phone_number");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Company_name_key" ON "Company"("name");
