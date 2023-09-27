@@ -1,20 +1,45 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# API de Comercio Electrónico con Microservicios
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+## Tecnologías
+<div style="display:flex" align="center">
+  <img src="https://img.shields.io/badge/Node.js-339933.svg?style=for-the-badge&logo=nodedotjs&logoColor=white" alt="node.js">
+  <img src="https://img.shields.io/badge/NestJS-E0234E.svg?style=for-the-badge&logo=NestJS&logoColor=white" alt="nestjs">
+  <img src="https://img.shields.io/badge/TypeScript-3178C6.svg?style=for-the-badge&logo=TypeScript&logoColor=white" alt="typescript">
+  <img src="https://img.shields.io/badge/Prisma-2D3748.svg?style=for-the-badge&logo=Prisma&logoColor=white" alt="prismaorm">
+  <img src="https://img.shields.io/badge/PostgreSQL-4169E1.svg?style=for-the-badge&logo=PostgreSQL&logoColor=white" alt="postgres">
+  <img src="https://img.shields.io/badge/OpenAPI%20Initiative-6BA539.svg?style=for-the-badge&logo=OpenAPI-Initiative&logoColor=white" alt="openapi">
+</div>
 
-  <div align="center">
-    <img src="https://img.shields.io/badge/Prisma-3982CE?style=for-the-badge&logo=Prisma&logoColor=white">
-    <img src="https://img.shields.io/badge/postgres-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white">
-    <img src="https://img.shields.io/badge/PayPal-00457C?style=for-the-badge&logo=paypal&logoColor=white">
-    <img src="https://img.shields.io/badge/-Swagger-%23Clojure?style=for-the-badge&logo=swagger&logoColor=whit">
-  </div>
 
-## Description
+## Descripción del Proyecto
 
-Aplicación de comercio electronico: Esta es una aplicación avanzada que permite a los usuarios comprar y vender productos.
+Estoy desarrollando una API para un sistema de comercio electrónico utilizando una arquitectura de microservicios. Este enfoque permite dividir la funcionalidad en servicios más pequeños e independientes que pueden ser desarrollados, desplegados y escalados de forma independiente.
+
+## Aspectos Clave
+
+### Diseño de la API
+
+Estoy trabajando en la definición de los puntos finales de la API, los métodos HTTP que se utilizarán y los datos que se enviarán y recibirán. También estoy considerando cómo manejar la paginación y la clasificación de los resultados.
+
+### Autenticación y Seguridad
+
+Estoy asegurándome de que sólo los usuarios autorizados puedan acceder a ciertas partes de la API. Esto implica el uso de tokens de autenticación, JWT.
+
+### Manejo de Errores
+
+Estoy diseñando la API para manejar errores de manera elegante, devolviendo códigos de estado HTTP apropiados y mensajes útiles cuando las cosas no salen según lo planeado.
+
+### Rendimiento y Escalabilidad
+
+Estoy trabajando para que la API pueda manejar un gran número de solicitudes simultáneas sin afectar negativamente el rendimiento. Esto implica técnicas como el almacenamiento en caché, la limitación de la tasa, y la optimización de las consultas a la base de datos.
+
+### Documentación
+
+Estoy creando una documentación detallada para ayudar a otros desarrolladores a entender cómo utilizar la API. Esto incluirá ejemplos de solicitudes y respuestas, detalles sobre los puntos finales y métodos disponibles, y cualquier otra información relevante.
+
+### Pruebas
+
+Estoy realizando pruebas exhaustivas para asegurar que la API funciona como se espera. Esto incluye pruebas unitarias, pruebas de integración y pruebas de carga.
 
 ## Requerimientos especificos
 
