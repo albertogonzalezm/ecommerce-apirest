@@ -3,27 +3,11 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UserModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
-import { ClientsModule, Transport } from '@nestjs/microservices';
-import { CompanyController } from './company/company.controller';
 import { CompanyModule } from './company/company.module';
-import { ProductsController } from './products/products.controller';
-import { ProductsModule } from './products/products.module';
 
 @Module({
-  imports: [
-    UserModule,
-    AuthModule,
-    ClientsModule.register([
-      {
-        name: 'COMPANY_SERVICE',
-        transport: Transport.TCP,
-        options: { port: 3001 },
-      },
-    ]),
-    CompanyModule,
-    ProductsModule,
-  ],
-  controllers: [AppController, CompanyController, ProductsController],
+  imports: [UserModule, AuthModule, CompanyModule],
+  controllers: [AppController],
   providers: [AppService],
 })
 export class AppModule {}

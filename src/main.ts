@@ -11,17 +11,15 @@ async function bootstrap() {
     credentials: true,
   });
   app.setGlobalPrefix('api/v1', {
-    exclude: [
-      { path: '/', method: RequestMethod.GET },
-      { path: '/company', method: RequestMethod.GET },
-    ],
+    exclude: [{ path: '/', method: RequestMethod.GET }],
   });
   const config = new DocumentBuilder()
     .setTitle('ONSHOP')
     .setDescription('OnShop API')
     .setVersion('1.0')
-    .addTag('user')
     .addTag('auth')
+    .addTag('user')
+    .addTag('company')
     .addServer(`http://localhost:${process.env.PORT}`, 'Local development')
     .addCookieAuth('access_token')
     .build();
@@ -31,6 +29,5 @@ async function bootstrap() {
   app.use(cookieParser());
 
   await app.listen(process.env.PORT);
-  console.log('NestApp is running');
 }
 bootstrap();
