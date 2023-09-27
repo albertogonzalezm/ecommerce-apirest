@@ -2,6 +2,7 @@ import {
   ConflictException,
   Injectable,
   NotFoundException,
+  HttpStatus,
 } from '@nestjs/common';
 import { PrismaService } from '../prisma.service';
 import { User, Prisma } from '@prisma/client';
@@ -11,18 +12,24 @@ import { hash } from 'bcrypt';
 export class UserService {
   constructor(private prisma: PrismaService) {}
 
-  async create(data: Prisma.UserCreateInput): Promise<string> {
+  async create(data: Prisma.UserCreateInput): Promise<object> {
     try {
       Object.assign(data, { password: await hash(data.password, 12) });
       await this.prisma.user.create({ data });
-      return `User has been created`;
+      return {
+        message: 'User has been created',
+        statusCode: HttpStatus.CREATED,
+        status: 'Created',
+      };
     } catch (error) {
-      throw new ConflictException();
+      throw new ConflictException('Email already exist');
     }
   }
 
   async findAll(): Promise<User[]> {
-    return await this.prisma.user.findMany();
+    const users = await this.prisma.user.findMany();
+    if (!users) throw new NotFoundException();
+    return users;
   }
 
   async findOne(id: string): Promise<User> {
@@ -31,13 +38,17 @@ export class UserService {
     return user;
   }
 
-  async update(id: string, data: any): Promise<string> {
+  async update(id: string, data: any): Promise<object> {
     try {
       if (data.password) {
         Object.assign(data, { password: await hash(data.password, 12) });
       }
       await this.prisma.user.update({ where: { user_id: id }, data });
-      return `User with id ${id.substring(24)} has been updated`;
+      return {
+        message: `User with id ${id.substring(24)} has been updated`,
+        statusCode: HttpStatus.OK,
+        status: 'OK',
+      };
     } catch (error) {
       throw new NotFoundException();
     }
