@@ -1,17 +1,23 @@
 import { PartialType } from '@nestjs/mapped-types';
 import { CreateUserDto } from './create-user.dto';
-import { IsEmail, IsOptional, IsString, MaxLength } from 'class-validator';
+import {
+  IsEmail,
+  IsOptional,
+  IsString,
+  MaxLength,
+  MinLength,
+} from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class UpdateUserDto extends PartialType(CreateUserDto) {
-  @ApiProperty({ example: 'Jhon Doe', required: false, maxLength: 55 })
+  @ApiProperty({ minLength: 2, maxLength: 55 })
   @IsString()
+  @MinLength(2)
   @MaxLength(55)
   @IsOptional()
   name: string;
 
   @ApiProperty({
-    example: 'jhon1doe@email.com',
     required: false,
     maxLength: 55,
   })
@@ -21,13 +27,14 @@ export class UpdateUserDto extends PartialType(CreateUserDto) {
   @IsOptional()
   email: string;
 
-  @ApiProperty({ example: 'Jhon123', required: false, maxLength: 255 })
+  @ApiProperty({ minLength: 8, maxLength: 255 })
   @IsString()
+  @MinLength(8)
   @MaxLength(255)
   @IsOptional()
   password: string;
 
-  @ApiProperty({ example: '+573001234567', required: false, maxLength: 20 })
+  @ApiProperty({ maxLength: 20 })
   @IsString()
   @MaxLength(20)
   @IsOptional()

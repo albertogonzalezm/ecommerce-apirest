@@ -14,7 +14,7 @@ import { UserService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User as UserModel } from '@prisma/client';
-import { ApiCookieAuth, ApiTags } from '@nestjs/swagger';
+import { ApiTags } from '@nestjs/swagger';
 import { RolesGuard } from 'src/guards/roles.guard';
 import { Roles } from 'src/decorators/roles.decorator';
 
@@ -31,8 +31,6 @@ export class UserController {
   }
 
   @Get()
-  @ApiCookieAuth()
-  @Roles('admin')
   @HttpCode(HttpStatus.OK)
   async findAll(): Promise<UserModel[]> {
     return await this.userService.findAll();

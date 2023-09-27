@@ -4,7 +4,7 @@ import {
   NotFoundException,
   HttpStatus,
 } from '@nestjs/common';
-import { PrismaService } from '../prisma.service';
+import { PrismaService } from 'src/prisma.service';
 import { User, Prisma } from '@prisma/client';
 import { hash } from 'bcrypt';
 
@@ -17,12 +17,12 @@ export class UserService {
       Object.assign(data, { password: await hash(data.password, 12) });
       await this.prisma.user.create({ data });
       return {
-        message: 'User has been created',
+        message: 'User has been added',
         statusCode: HttpStatus.CREATED,
         status: 'Created',
       };
     } catch (error) {
-      throw new ConflictException('Email already exist');
+      throw new ConflictException(error.message);
     }
   }
 
@@ -38,9 +38,9 @@ export class UserService {
     return user;
   }
 
-  async update(id: string, data: any): Promise<object> {
+  async update(id: string, data: Prisma.UserUpdateInput): Promise<object> {
     try {
-      if (data.password) {
+      if (typeof data.password === 'string') {
         Object.assign(data, { password: await hash(data.password, 12) });
       }
       await this.prisma.user.update({ where: { user_id: id }, data });
