@@ -57,14 +57,14 @@ $ npm install
 ## Ejecutar la aplicación
 
 ```bash
-# development
-$ npm run start
-
-# watch mode
+# development - watch mode
 $ npm run start:dev
 
+# development - debug & watch mode
+$ npm run start:debug
+
 # production mode
-$ npm run start:prod
+$ npm run start
 ```
 
 ## Pruebas
