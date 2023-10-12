@@ -9,6 +9,9 @@ import {
   UseGuards,
   HttpCode,
   HttpStatus,
+  Inject,
+  ConflictException,
+  NotFoundException,
 } from '@nestjs/common';
 import { UserService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -16,24 +19,31 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { User as UserModel } from '@prisma/client';
 import { ApiTags } from '@nestjs/swagger';
 import { RolesGuard } from 'src/guards/roles.guard';
-import { Roles } from 'src/decorators/roles.decorator';
+import { ClientProxy } from '@nestjs/microservices';
+
+// import { Roles } from 'src/decorators/roles.decorator';
 
 @ApiTags('user')
 @Controller('users')
 @UseGuards(RolesGuard)
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(
+    private readonly userService: UserService,
+    @Inject('USERS_SERVICE') private client: ClientProxy,
+  ) {}
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  async create(@Body() createUserDto: CreateUserDto): Promise<object> {
-    return await this.userService.create(createUserDto);
+  async create(@Body() data: CreateUserDto) {
+    return this.userService.create(data);
   }
 
   @Get()
   @HttpCode(HttpStatus.OK)
-  async findAll(): Promise<UserModel[]> {
-    return await this.userService.findAll();
+  async findAll() {
+    const res = await lastValueFrom(this.client.send('find_users', ''));
+    if (!res) throw new NotFoundException();
+    return res;
   }
 
   @Get(':id')

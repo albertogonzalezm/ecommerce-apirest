@@ -16,7 +16,7 @@ import { UpdateCompanyDto } from './dto/update-company.dto';
 import { Company as CompanyModel } from '@prisma/client';
 import { ApiTags } from '@nestjs/swagger';
 import { RolesGuard } from 'src/guards/roles.guard';
-import { Roles } from 'src/decorators/roles.decorator';
+// import { Roles } from 'src/decorators/roles.decorator';
 
 @ApiTags('company')
 @Controller('company')

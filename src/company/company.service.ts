@@ -1,6 +1,5 @@
 import {
   ConflictException,
-  HttpStatus,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
@@ -18,7 +17,7 @@ export class CompanyService {
       await this.prisma.company.create({ data });
       return {
         message: 'Company has been added',
-        statusCode: HttpStatus.CREATED,
+        statusCode: 201,
         status: 'Created',
       };
     } catch (error) {
@@ -48,7 +47,7 @@ export class CompanyService {
       await this.prisma.company.update({ where: { company_id: id }, data });
       return {
         message: `Company with id ${id.substring(24)} has been updated`,
-        statusCode: HttpStatus.OK,
+        statusCode: 200,
         status: 'OK',
       };
     } catch (error) {
